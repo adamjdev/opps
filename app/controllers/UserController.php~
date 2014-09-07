@@ -1,0 +1,113 @@
+<?php
+
+class UserController extends Controller {
+
+	public function index()
+    {
+        $user = new User($this->db);
+        $this->f3->set('users',$user->all());
+        $this->f3->set('page_head','User List');
+        $this->f3->set('message', $this->f3->get('PARAMS.message'));
+        $this->f3->set('view','user/list.htm');
+	}
+
+	public function login()
+	{
+		$this->f3->clear('SESSION');
+                if ($this->f3->get('eurocookie')) {
+                        $loc=Web\Geo::instance()->location();
+                        if (isset($loc['continent_code']) && $loc['continent_code']=='EU')
+                                $this->f3->set('message',
+                                        'The administrator pages of this Web site uses cookies '.
+                                        'for identification and security. Without these '.
+                                        'cookies, these pages would simply be inaccessible. By '.
+                                        'using these pages you agree to this safety measure.');
+                }
+                $this->f3->set('COOKIE.sent',TRUE);
+                if ($this->f3->get('message')) {
+                        $img=new Image;
+                        $this->f3->set('captcha',$f3->base64(
+                                $img->captcha('fonts/thunder.ttf',18,5,'SESSION.captcha')->
+                                        dump(),'image/png'));
+                }
+                $this->f3->set('page_head','Login Page');
+                $this->f3->set('view','user/login.htm');
+
+    }
+    
+     //! Process login form
+        function auth() {  
+                if (!$this->f3->get('COOKIE.sent'))
+                        $this->f3->set('message','Cookies must be enabled to enter this area');
+                else {
+                        $crypt=$this->f3->get('password');
+                        $captcha=$this->f3->get('SESSION.captcha');
+                        if ($captcha && strtoupper($this->f3->get('POST.captcha'))!=$captcha)
+                                $this->f3->set('message','Invalid CAPTCHA code');
+                        elseif ($this->f3->get('POST.user_id')!=$this->f3->get('user_id') ||
+                                crypt($this->f3->get('POST.password'),$crypt)!=$crypt)
+                                $this->f3->set('message','Invalid user ID or password');
+                        else {
+                                $this->f3->clear('COOKIE.sent');
+                                $this->f3->clear('SESSION.captcha');
+                                $this->f3->set('SESSION.user_id',$f3->get('POST.user_id'));
+                                $this->f3->set('SESSION.crypt',$crypt);
+                                $this->f3->set('SESSION.lastseen',time());
+                                $this->f3->reroute('/admin/pages');
+                        }
+                }
+                $this->f3->login();
+        }
+        
+         //! Terminate session
+        function logout() {
+                $this->f3->clear('SESSION');
+                $this->f3->reroute('/login');
+        }
+
+    public function create()
+    {
+        if($this->f3->exists('POST.create'))
+        {
+            $user = new User($this->db);
+            $user->add();
+
+            $this->f3->reroute('/success/New User Created');
+        } else
+        {
+            $this->f3->set('page_head','Create User');
+            $this->f3->set('view','user/create.htm');
+        }
+
+    }
+
+    public function update()
+    {
+
+        $user = new User($this->db);
+
+        if($this->f3->exists('POST.update'))
+        {
+            $user->edit($this->f3->get('POST.id'));
+            $this->f3->reroute('/success/User Updated');
+        } else
+        {
+            $user->getById($this->f3->get('PARAMS.id'));
+            $this->f3->set('user',$user);
+            $this->f3->set('page_head','Update User');
+            $this->f3->set('view','user/update.htm');
+        }
+
+    }
+
+    public function delete()
+    {
+        if($this->f3->exists('PARAMS.id'))
+        {
+            $user = new User($this->db);
+            $user->delete($this->f3->get('PARAMS.id'));
+        }
+
+        $this->f3->reroute('/success/User Deleted');
+    }
+}

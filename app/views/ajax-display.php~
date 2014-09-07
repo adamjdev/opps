@@ -1,0 +1,15 @@
+<p>
+			<label for="select4" class="choose"><strong>Paypal charges:</strong></label>
+				<input id="itemQt2" class=norm name="paypal" type="text" size="25"  value="{{ @charge }}" />
+					
+		</p>
+		<p>
+			<label for="select4" class="choose"><strong>Qcell service charge:</strong></label>
+				<input id="itemQt2" class=norm name="charge" type="text" size="25"  value="{{ @service_fee }}" />
+					
+		</p>
+		<p>
+			<label for="select4" class="choose"><strong>Amount in Dalasis:</strong></label>
+				<input id="itemQt2" class=norm name="itemQty2" type="text" size="25"  value="{{ @vend_amount }}" />
+					
+		</p>";

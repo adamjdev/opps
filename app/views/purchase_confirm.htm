@@ -1,0 +1,57 @@
+<exclude>
+	<div class="row">
+        <div class="span12">
+    		<div class="thumbnail center well well-small text-center">
+                <h2>Transaction completed</h2>
+                
+                <p>The Token has been send to the phone number provided</p>
+           
+                
+                <form name="confirmation" action="{{ @BASE.'/confirmation' }}" method="post">
+                    <div class="input-group "><span class="input-group-addon glyphicon glyphicon-edit"></span>
+                        <input type="text" id="code" class="form-control" name="code" placeholder="Enter code">
+                    </div>
+                    <p>
+                    did not recieve your code? click <a href="{{ @BASE.'/confirmation/resend' }}"><strong class="label label-primary">Here</strong></a>
+                    or call QCare on 111 for help! </p>
+                   
+				 
+                <strong>{{ @checkout_id }} &nbsp; {{ @checkout_uri }}</strong><br />
+   
+                               
+                    <br />
+                    <input type="hidden" name="confirm_code" value="confirm_code" />
+                    <div class="col-xs-6 col-md-2"><input type="submit" value="Confirm" class="btn btn-success btn-block btn-lg"></div>
+              </form>
+            </div>    
+        </div>
+	</div>
+</exclude>
+
+<div class="container">
+	<div class="row">
+        <!-- Boxes de Acoes -->
+    	<div class="col-xs-12 col-sm-6 col-lg-4">
+			<div class="box">							
+				<div class="icon">
+					<div class="image"><i class="fa fa-thumbs-o-up"></i></div>
+					<div class="info">
+						<h3 class="title">Transaction completed</h3>
+						<p>
+							Meter No: {{ @meter }} <br />
+							Power Amount: {{ @vend_amount }} <br />
+							Service Fee: {{ @service_fee }} <br />
+							Units: {{ @units }} <br />
+							Receipt No: {{ @recepit }} <br />
+							*Token will be send to the mobile number
+						</p>
+						<div class="more">
+							<a href="#" title="Title Link">
+								Read More <i class="fa fa-angle-double-right"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="space"></div>
+			</div> 
+		</div>

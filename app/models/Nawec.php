@@ -43,7 +43,7 @@ class Nawec {
 		<vend type=\"request\" format-by=\"client\">
 		<unit-id>$unit_id</unit-id>
 		<user-name>QCELL</user-name>
-		<password>QPower2</password>
+		<password>Password</password>
 		<meter>
 		<meter-number>$meter</meter-number>
 		</meter>
@@ -95,7 +95,7 @@ class Nawec {
 		<consumer-chk type=\"request\" format-by=\"server\">
 		<unit-id>$unit_id</unit-id>
 		<user-name>QCELL</user-name>
-		<password>QPower2</password>
+		<password>Password</password>
 		<meter>
 		<meter-number>$meter</meter-number>
 		</meter>
